@@ -3,14 +3,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-
 public class BBB extends JFrame {
     private String[] competidores;
     private int[] votos;
-    private JButton botoesVotar;
+    private JButton btnVotar;
     private JTextArea resultadoArea;
-    private JTextArea logArea;
-    private JScrollPane logScrollPane;
 
     public BBB(String[] competidores) {
         this.competidores = competidores;
@@ -27,9 +24,13 @@ public class BBB extends JFrame {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JButton btnbotoesVotar = new JButton("Vote Aqui! ");
-        btnbotoesVotar.addActionListener(e -> JOptionPane.showInputDialog("Em quem você vota para sair da casa? "));
-        panel.add(btnbotoesVotar, gbc);
+        btnVotar = new JButton("Vote Aqui! ");
+        btnVotar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                votar();
+            }
+        });
+        panel.add(btnVotar, gbc);
 
         JButton btnVerVotos = new JButton("Ver quem sai!");
         btnVerVotos.addActionListener(new ActionListener() {
@@ -45,31 +46,32 @@ public class BBB extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    private void votar() {
+        String voto = JOptionPane.showInputDialog("Em quem você vota para sair da casa? ");
+        for (int i = 0; i < competidores.length; i++) {
+            if (voto.equalsIgnoreCase(competidores[i])) {
+                votos[i]++;
+                JOptionPane.showMessageDialog(this, "Voto computado para " + competidores[i] + "!");
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(this, "Competidor não encontrado na lista.");
+    }
 
     private void exibirPosicoes() {
-        int primeiro = 0;
-        int segundo = 1;
-        int terceiro = 2;
-
-        for (int i = 1; i < competidores.length; i++) {
-            if (votos[i] > votos[primeiro]) {
-                terceiro = segundo;
-                segundo = primeiro;
-                primeiro = i;
-            } else if (votos[i] > votos[segundo]) {
-                terceiro = segundo;
-                segundo = i;
-            } else if (votos[i] > votos[terceiro]) {
-                terceiro = i;
+        int maxVotosIndex = 0;
+        for (int i = 1; i < votos.length; i++) {
+            if (votos[i] > votos[maxVotosIndex]) {
+                maxVotosIndex = i;
             }
         }
 
         JOptionPane.showMessageDialog(this,
-                "Se eu conseguir mover montanhas, se eu conseguir surfar um tsunami, se eu conseguir"+
-                        "domar o sol, se eu conseguir fazer o mar virar sertão, e o sertão virar mar, se eu"+
-                        "\nconseguir dizer o que eu nunca vou conseguir dizer, aí terá chegado o dia em que eu" +
-                        "vou conseguir te eliminar com alegria. Com "  + votos[primeiro] + "votos, é você quem sai " +
-                        competidores[primeiro],
+                "Se eu conseguir mover montanhas, se eu conseguir surfar um tsunami, se eu conseguir " +
+                        "domar o sol, se eu conseguir fazer o mar virar sertão, e o sertão virar mar, se eu " +
+                        "\nconseguir dizer o que eu nunca vou conseguir dizer, aí terá chegado o dia em que eu " +
+                        "vou conseguir te eliminar com alegria. Com " + votos[maxVotosIndex] + " votos, é você quem sai " +
+                        competidores[maxVotosIndex] + "!!!",
                 "Quem sai hoje", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -85,5 +87,4 @@ public class BBB extends JFrame {
             }
         });
     }
-
 }
