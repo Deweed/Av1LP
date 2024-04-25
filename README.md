@@ -19,9 +19,10 @@
 
 
 ```
-Este é um projeto que simula um contador de votos do BBB 2024
-o projeto consta apenas com a parte grafica! 
-
+Este é um projeto que simula um contador de votos do BBB 2024,
+o Sistema procura no array os participantes e conta os votos 
+para que os mais votados entre todos os participantes sejam 
+eliminados no final!
 ```
 ## Feito Com
 
